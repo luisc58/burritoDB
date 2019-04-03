@@ -8,6 +8,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(morgan('short'));
 app.use(cors({ origin: '*' }));
+
+//|||||||||||||||||||||||||||||||||||||
+// setup your db config
+//|||||||||||||||||||||||||||||||||||||
 const config = {
 	host: 'localhost',
 	user: 'root',
