@@ -65,6 +65,14 @@ app.get('/super/allItems', (req, res) => {
 	});
 });
 
+app.get('/super/item/:id', (req, res) => {
+	let query = `SELECT * FROM Items WHERE id = (?)`;
+	let id = req.params.id;
+	db.query(query, [ id ]).then((result) => {
+		res.json(result);
+	});
+});
+
 app.post('/super/createItem', (req, res) => {
 	const { name, poster, description, category } = req.body;
 	const queryString = `INSERT INTO Items (name, poster, description, product_category) VALUES (?,?,?,?)`;
@@ -79,6 +87,16 @@ app.delete('/super/deleteItem/:id', (req, res) => {
 	const queryString = `DELETE FROM Items WHERE id = (?)`;
 	db.query(queryString, [ id ]).then((err) => {
 		if (err) console.log(err);
+		res.end();
+	});
+});
+
+app.put('/super/updateItem/:id', (req, res) => {
+	let { name, poster, description, product_category } = req.body;
+	let id = req.params.id;
+	const queryString = `UPDATE Items SET (name, poster, description, product_category) VALUES (?,?,?,?) WHERE id = (?)`;
+	database.query(queryString, [ name, poster, description, product_category, id ]).then((err) => {
+		if (err) console.log('Failed to update item', id);
 		res.end();
 	});
 });
