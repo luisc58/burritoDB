@@ -24,6 +24,4 @@ class Database {
 	}
 }
 
-// const pool = mysql.createPool(config);
-
 module.exports = Database;

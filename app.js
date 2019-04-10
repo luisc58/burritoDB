@@ -73,6 +73,22 @@ app.get('/super/item/:id', (req, res) => {
 	});
 });
 
+app.get('/super/itemAsks/:id', (req, res) => {
+	let query = `SELECT * FROM ItemAsks WHERE item_id = (?)`;
+	let id = req.params.id;
+	db.query(query, [ id ]).then((result) => {
+		res.json(result);
+	});
+});
+
+app.get('/super/itemBids/:id', (req, res) => {
+	let query = `SELECT * FROM ItemBids WHERE item_id = (?)`;
+	let id = req.params.id;
+	db.query(query, [ id ]).then((result) => {
+		res.json(result);
+	});
+});
+
 app.post('/super/createItem', (req, res) => {
 	const { name, poster, description, category } = req.body;
 	const queryString = `INSERT INTO Items (name, poster, description, product_category) VALUES (?,?,?,?)`;
