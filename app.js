@@ -91,9 +91,28 @@ app.get('/super/itemBids/:id', (req, res) => {
 
 app.post('/super/createItem', (req, res) => {
 	const { name, poster, description, category } = req.body;
+	console.log('testing', req.body);
 	const queryString = `INSERT INTO Items (name, poster, description, product_category) VALUES (?,?,?,?)`;
 	db.query(queryString, [ name, poster, description, category ]).then((err, results) => {
 		if (err) console.log('Failed to insert new item');
+		res.end();
+	});
+});
+
+app.post('/user/placeAsk', (req, res) => {
+	const { item_id, ask_value, seller } = req.body;
+	const query = `INSERT INTO ItemAsks (ask_value, seller, item_id) VALUES (?,?,?)`;
+	db.query(query, [ ask_value, seller, item_id ]).then((err, results) => {
+		if (err) console.log('Failed to place ask');
+		res.end();
+	});
+});
+
+app.post('/user/placeBid', (req, res) => {
+	const { bid, bidder, item_id } = req.body;
+	const query = `INSERT INTO ItemBids (bid, bidder, item_id) VALUES (?,?,?)`;
+	db.query(query, [ bid, bidder, item_id ]).then((err, results) => {
+		if (err) console.log('Failed to place bid');
 		res.end();
 	});
 });
@@ -108,11 +127,12 @@ app.delete('/super/deleteItem/:id', (req, res) => {
 });
 
 app.put('/super/updateItem/:id', (req, res) => {
-	let { name, poster, description, product_category } = req.body;
 	let id = req.params.id;
-	const queryString = `UPDATE Items SET (name, poster, description, product_category) VALUES (?,?,?,?) WHERE id = (?)`;
-	database.query(queryString, [ name, poster, description, product_category, id ]).then((err) => {
-		if (err) console.log('Failed to update item', id);
+	let { name, poster, description, category } = req.body;
+
+	const queryString = `UPDATE Items SET name = ?, poster = ?, description= ?, product_category = ? WHERE id = ?`;
+	db.query(queryString, [ name, poster, description, category, id ]).then((err) => {
+		if (err) console.log(err);
 		res.end();
 	});
 });
